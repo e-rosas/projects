@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Project;
-use App\Mail\ProjectCreated;
+use Illuminate\Http\Request;
 
 class ProjectsController extends Controller
 {
@@ -15,9 +14,7 @@ class ProjectsController extends Controller
 
     public function index()
     {
-
         $projects = auth()->user()->projects;
-
 
         //$projects = Project::where('owner_id', auth()->id())->get();
 
@@ -39,26 +36,18 @@ class ProjectsController extends Controller
 
         $validated['owner_id'] = auth()->id();
 
-        $project = Project::create($validated);
-
-        \Mail::to($project->owner->email)->send(
-
-            new ProjectCreated($project)
-
-        );
+        Project::create($validated);
 
         return redirect('/projects');
     }
 
     public function show(Project $project)
     {
-
         $this->authorize('update', $project);
 
         //abort_if($project->owner_id !== auth()->id(), 403);
 
         return view('projects.show', compact('project'));
-
     }
 
     public function edit(Project $project)
@@ -70,7 +59,6 @@ class ProjectsController extends Controller
 
     public function update(Project $project)
     {
-
         $this->authorize('update', $project);
 
         $validated = $this->validateProject();
@@ -82,7 +70,6 @@ class ProjectsController extends Controller
 
     public function destroy(Project $project)
     {
-
         $this->authorize('update', $project);
 
         $project->delete();
@@ -94,8 +81,7 @@ class ProjectsController extends Controller
     {
         return request()->validate([
             'title' => ['required', 'min:3', 'max:255'],
-            'description' => ['required', 'min:3']
+            'description' => ['required', 'min:3'],
         ]);
     }
-
 }
