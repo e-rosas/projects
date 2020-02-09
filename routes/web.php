@@ -14,9 +14,7 @@
 use App\Services\Twitter;
 
 Route::get('/', function (Twitter $twitter) {
-
     return view('welcome');
-
 });
 
 //Route::patch('/tasks/{task}', 'ProjectTasksController@update');
